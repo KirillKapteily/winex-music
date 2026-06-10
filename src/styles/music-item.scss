@@ -1,0 +1,21 @@
+.music__item {
+    display: flex;
+    border-radius: 30px;
+    width: 100%;
+    transition: box-shadow cubic-bezier(0.075, 0.82, 0.165, 1) 0.7s;
+    // backdrop-filter: blur(3px);
+    padding: 10px;
+    background: linear-gradient(to top, #cfecff2b, #ffffff00);
+    border: rgba(0, 145, 255, 0.061) 1px solid;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 2px 5px rgba(0, 145, 255, 0.061);
+
+    &:hover {
+        background: linear-gradient(to top, #cfecff3a, #ffffff00);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.349), inset 0 2px 5px rgba(0, 145, 255, 0.224);
+    }
+}
+
+.music__img {
+    border-radius: 10px;
+    margin-right: 10px;
+}
