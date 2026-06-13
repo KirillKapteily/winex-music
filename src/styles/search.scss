@@ -26,6 +26,16 @@
     }
 }
 
+.music__search__selector{
+     border-radius: 30px;
+    transition: transform cubic-bezier(0.075, 0.82, 0.165, 1) 0.7s, margin cubic-bezier(0.075, 0.82, 0.165, 1) 0.7s, box-shadow cubic-bezier(0.075, 0.82, 0.165, 1) 0.7s;
+    backdrop-filter: blur(7px);
+    padding: 10px;
+    background: #ffffff3d;;
+    border: rgba(0, 145, 255, 0.061) 1px solid;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 2px 5px rgba(0, 145, 255, 0.061);
+}
+
 header {
     top: 0;
     left: 0;

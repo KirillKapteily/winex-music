@@ -1,13 +1,15 @@
 import { useState, useEffect, useRef } from "react"
 import "../styles/player.scss"
 
-export default function CustomAudioPlayerMaster2({ track }) {
+export default function CustomAudioPlayerMaster2({ track, filter }) {
     const audioRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
     const [volume, setVolume] = useState(1);
 
     useEffect(() => {
+        console.log(filter);
+        
         setIsPlaying(true);
     }, [track]);
 
@@ -42,13 +44,26 @@ export default function CustomAudioPlayerMaster2({ track }) {
 
     return (
         <div className="player__block floating">
-            <audio
+            {filter === "song" ? <audio
                 ref={audioRef}
                 onEnded={() => (setIsPlaying(false))}
                 autoPlay
                 src={track.previewUrl.replace("http://", "https://")}
             />
-            <img src={track.artworkUrl100} alt={track.artistName} className="music__img" width="300" />
+
+                :
+
+                <video
+                    width="300"
+                    controls
+                     ref={audioRef}
+                    src={track.previewUrl.replace("http://", "https://")}
+                    autoPlay
+                    onEnded={() => (setIsPlaying(false))}
+                />
+            }
+           {filter === "song" ? <img src={track.artworkUrl100} alt={track.artistName} className="music__img" width="300"/> : null}
+
             <h3>{track.artistName}</h3>
             <p>{track.collectionName}</p>
             <strong>{track.trackName}</strong>

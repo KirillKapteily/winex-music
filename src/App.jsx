@@ -17,8 +17,10 @@ const itunesApi = axios.create({
 function App() {
   const [musicList, setMusicList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [filter, setFilter] = useState("song")
   const [limit, setLimit] = useState(25)
   const [isLoading, setLoading] = useState(false);
+  const [resultCount, setResultCount] = useState(0)
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [error, setError] = useState(null);
@@ -30,23 +32,29 @@ function App() {
     setLoading(true);
     console.log("Fetching:", query, "Offset:", currentOffset);
     try {
-      const response = await itunesApi.get(`/search?term=${query}&entity=song&limit=${ITEMS_PER_PAGE}&offset=${currentOffset}`);
+      const response = await itunesApi.get(`/search?term=${query}&entity=${filter}&limit=${ITEMS_PER_PAGE}&offset=${currentOffset}`);
       // setMusicList(response.data.results);
 
       const results = response.data.results || [];
-      setHasMore(results.length === ITEMS_PER_PAGE)
+      const resCount = response.data.resultCount;
+
+      console.log("Count: ", resCount);
+
+      // if (resCount == musicList.length) {
+      //   setHasMore(false)
+      // } else {
+      //   setHasMore(true)
+      // }
+
+      console.log("is more", hasMore)
+      console.log("lenght", musicList.length)
+
       console.log(response);
       //: results.length === 0 ? null 
 
-      console.log(
-        results.map(song => song.trackId)
-      );
+      console.log(results.map(song => song.trackId));
 
       setMusicList(prevList => currentOffset === 0 ? results : ([...prevList, ...results]))
-
-      console.log(
-        results.map(song => song.trackId)
-      );
 
     } catch (error) {
       console.log("uh-oh", error);
@@ -55,25 +63,44 @@ function App() {
     }
   }
 
+  useEffect(() => {
+    if (resultCount == musicList.length) {
+      console.log("lenght", musicList.length)
+     
+      setHasMore(false)
+    } else {
+      console.log("lenght", musicList.length)
+      setHasMore(true)
+    }
+  }, [resultCount])
+
+  const filterEnts = (fill, query) => {
+    setFilter(fill);
+    console.log(fill);
+    setMusicList([]);
+    setOffset(0);
+  }
+
   const searchMusic = async (query, currentOffset) => {
     setSearchQuery(query);
     setOffset(0);
     setMusicList([]);
   }
 
+  //EFFECT!
   useEffect(() => {
     if (!searchQuery) return;
 
     console.log(musicList.length);
-
 
     if (musicList.length >= 200) {
       setHasMore(false)
     }
 
     console.log("Fetching:", searchQuery, offset);
+
     loadMusic(searchQuery, offset);
-  }, [searchQuery, offset])
+  }, [searchQuery, offset, filter])
 
   // const getSecureAudioUrl = (url) => {
   //   if (!url) return "";
@@ -87,17 +114,17 @@ function App() {
 
   return (
     <>
-      <Search onSubmit={searchMusic} />
+      <Search onSubmit={searchMusic} filterEnts={filterEnts} />
       {isLoading && musicList.length === 0 ? (<h1>Loading</h1>) : (<div className="layout__wrapper lay__wra__2">
         <div>
           <MusicList musicList={musicList} setCurrentTrack={setCurrentTrack} />
         </div>
         <div>
-          <CustomAudioPlayerMaster2 track={currentTrack} />
+          <CustomAudioPlayerMaster2 track={currentTrack} filter={filter} />
         </div>
       </div>)}
 
-      {hasMore && musicList.length > 0 && <Button onClick={loadMore} />}
+      {hasMore == true && musicList.length > 0 && <Button onClick={loadMore} />}
 
       {/* {isLoading && <h1>Loading...</h1>} */}
       {error && <p>err</p>}
