@@ -5,11 +5,10 @@ export default function CustomAudioPlayerMaster2({ track, filter }) {
     const audioRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
-    const [volume, setVolume] = useState(1);
 
     useEffect(() => {
         console.log(filter);
-        
+
         setIsPlaying(true);
     }, [track]);
 
@@ -33,15 +32,6 @@ export default function CustomAudioPlayerMaster2({ track, filter }) {
         setIsMuted(muteState);
     }
 
-    const hanndleVolumeChange = (event) => {
-        const nextVolume = parseFloat(event.target.value);
-
-        audioRef.current.volume = nextVolume;
-
-        setVolume(nextVolume);
-        setIsMuted(nextVolume === 0);
-    }
-
     return (
         <div className="player__block floating">
             {filter === "song" || "podcast" || "audiobook" ? <audio
@@ -60,26 +50,18 @@ export default function CustomAudioPlayerMaster2({ track, filter }) {
                     onEnded={() => (setIsPlaying(false))}
                 />
             }
-           {filter === "song"|| "podcast" || "audiobook" ? <img src={track.artworkUrl100} alt={track.artistName} className="music__img" width="300"/> : null}
-
-            <h3>{track.artistName}</h3>
-            <p>{track.collectionName}</p>
-            
-            <p>{track.trackName}</p>
-
-            <div className="btn__wrapper">
-                <button onClick={hanndlePlay} className="player__btn">{isPlaying ? "pause" : "play"}</button>
-                <button onClick={hanndleMute} className={isMuted ? "player__btn__muted" : "player__btn"}>{isMuted ? "unmute" : "mute"}</button>
+            {filter === "song" || "podcast" || "audiobook" ? <img src={track.artworkUrl100} alt={track.artistName} className="music__img" width="50" /> : null}
+            <div className="player__wrapper">
+                <div className="info__wrapper">
+                    <p className="artist__text">{track.artistName}</p>
+                    <p className="track__text">{track.trackName}</p>
+                </div>
+                <div className="btn__wrapper">
+                    <button onClick={hanndlePlay} className="player__btn">{isPlaying ? "| |" : ">"}</button>
+                    {/* <button onClick={hanndleMute} className={isMuted ? "player__btn__muted" : "player__btn"}>{isMuted ? "unmute" : "mute"}</button> */}
+                </div>
             </div>
 
-
-            <input type="range"
-                value={volume}
-                min="0"
-                max="1"
-                step="0.01"
-                onChange={hanndleVolumeChange}
-            />
         </div>
     )
 }

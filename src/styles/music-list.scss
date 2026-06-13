@@ -9,3 +9,10 @@
     gap: 10px;
     margin: 10px;
 }
+
+@media (min-width:320px) and (max-width:480px) {
+    .music__list {
+margin: 3px 3px 90px 3px;
+    }
+   
+}

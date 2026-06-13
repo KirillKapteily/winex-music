@@ -19,7 +19,7 @@
 
 .music__search__btn {
     @extend .music__search;
-    background: linear-gradient(to top, #cfecff86, #ffffff00);
+    background: linear-gradient(to top, #cfecff86, #ffffff5b);
 
     &:hover {
         background: linear-gradient(to top, #cfecff, #ffffff00);
@@ -52,4 +52,22 @@ header {
     color: #fff;
  background: linear-gradient(to bottom, #cfecff, #ffffff00);
 
+}
+
+
+
+    @media (min-width:320px) and (max-width:380px) {
+  header {
+    flex-direction: column;
+    }
+
+    .music__search__selector{
+    order: 2;
+    margin-bottom: 10px;
+    }
+
+    .music__search__form {
+order: 3;
+    }
+    
 }

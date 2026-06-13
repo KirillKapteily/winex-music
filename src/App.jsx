@@ -4,9 +4,12 @@ import Search from "./components/Search";
 import CustomAudioPlayer from "./components/CustomAudioPlayer";
 import CustomAudioPlayerMaster2 from "./components/CustomAudioPlayerMaster2";
 import Button from "./components/Button";
+import MPlayerMobile from "./components/MPlayerMobile"
 //import Loader from "./components/Loader";
 import "./styles/body.scss"
 import { useEffect, useState } from "react";
+ import useMediaQuery from '@mui/material/useMediaQuery';
+// import useMediaQuery from "./hooks/useMediaQuery"
 
 const itunesApi = axios.create({
   baseURL: 'https://itunes.apple.com'
@@ -16,16 +19,17 @@ const itunesApi = axios.create({
 
 function App() {
   const [musicList, setMusicList] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filter, setFilter] = useState("song")
-  const [limit, setLimit] = useState(25)
+  const [searchQuery, setSearchQuery] = useState("the tortured poets");
+  const [filter, setFilter] = useState("song");
+  const [limit, setLimit] = useState(25);
   const [isLoading, setLoading] = useState(false);
-  const [resultCount, setResultCount] = useState(0)
+  const [resultCount, setResultCount] = useState(0);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [error, setError] = useState(null);
   const [currentTrack, setCurrentTrack] = useState(null);
 
+  const isMobile = useMediaQuery('(min-width:320px) and (max-width:480px)');
   const ITEMS_PER_PAGE = 25;
 
   const loadMusic = async (query, currentOffset) => {
@@ -82,9 +86,11 @@ function App() {
   }
 
   const searchMusic = async (query, currentOffset) => {
+if (query === "") {return};
+
     setSearchQuery(query);
     setOffset(0);
-    setMusicList([]);
+   {searchQuery === query ? null : setMusicList([])}
   }
 
   //EFFECT!
@@ -120,7 +126,7 @@ function App() {
           <MusicList musicList={musicList} setCurrentTrack={setCurrentTrack} />
         </div>
         <div>
-          <CustomAudioPlayerMaster2 track={currentTrack} filter={filter} />
+         {isMobile ? <MPlayerMobile  track={currentTrack} filter={filter}/> : <CustomAudioPlayerMaster2 track={currentTrack} filter={filter} />}
         </div>
       </div>)}
 
